@@ -1,0 +1,83 @@
+{% load bootstrap4 %}
+{% load static%}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type"
+    content="text/html; charset=utf-8">
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title> {% block title%}Главная{% endblock %} - Доска объявлений</title>
+    {% bootstrap_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
+    {% bootstrap_javascript jquery='slim' %}
+</head>
+
+<body class="container-fluid">
+    <header class="mb-4">
+        <h1 class="display-1 text-center">Объявления</h1>
+    </header>
+
+    <div class="row">
+
+        <ul class="col nav justify-content-end border">
+            {% if not user.is_authenticated %}
+            <li class="nav-item"><a href="#" class="nav-link">Регистрация</a></li>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link" data-toggle="dropdown"
+                role="button" aria-haspopup="true" aria-expanded="false">Профиль</a>
+                <div class="dropdown-menu">
+                    <a href="{% url 'ads:profile' %}" class="dropdown-item">Мои объявления</a>
+                    <a href="{% url 'ads:profile_change' %}" class="dropdown-item">Изменить личные данные</a>
+                    <a href="#" class="dropdown-item">Изменить пароль</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{% url 'ads:logout'  %}" class="dropdown-item">Выйти</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">Удалить</a>
+                </div>
+            </li>
+
+            {% else %}
+            <li class="nav-item"><a href="{% url 'ads:login' %}" class="nav-link">
+            Вход</a></li>
+            {%endif%}
+        </ul>
+    </div>
+
+    <div class="row">
+        <nav class="col-md-auto nav flex-column border">
+            <a href="{% url 'ads:index' %}" class="nav-link root">Главная</a>
+            <span class="nav-link root font-weight-bold">Недвижимость</span>
+            <a href="#" class="nav-link">Жилье</a>
+            <a href="#" class="nav-link">Склады</a>
+            <a href="#" class="nav-link">Гаражи</a>
+            <span class="nav-link root font-weight-bold">Транспорт</span>
+            <a href="#" class="nav-link">Легковой</a>
+            <a href="#" class="nav-link">Грузовой</a>
+            <a href="{% url 'ads:other' page='about' %}" class="nav-link root">О сайте</a>
+
+        </nav>
+
+        <section class="col border py-2">
+            {% bootstrap_messages %}
+            {% block content %}
+            {% endblock  %}
+        </section>
+    </div>
+
+    <footer class="mt-3">
+        <p class="text-right font-italic">&copy; Украина 2022</p>
+    </footer>
+
+{% bootstrap_messages %}
+
+
+
+</body>
+
+</html>
