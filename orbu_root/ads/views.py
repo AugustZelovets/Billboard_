@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -8,9 +9,9 @@ from django.template import TemplateDoesNotExist
 from django.template.loader import get_template
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import logout, login
-from django.views.generic import UpdateView
+from django.views.generic.edit import UpdateView, CreateView
 
-from .forms import ChangeUserInfo
+from .forms import ChangeUserInfo, RegisterUserForm
 from .models import Ad, Gallery, User
 
 
@@ -62,6 +63,29 @@ class ChangeUserInfoView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
             queryset = self.get_queryset()
         return get_object_or_404(queryset, pk=self.user_id)
 
+
+class RegisterUser(CreateView):
+    form_class = UserCreationForm
+    #model = User
+    template_name = 'ads/registration.html'
+    success_url = reverse_lazy('login')
+    fields = ['username', 'first_name']
+
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('index')
+
+
+
+
+
+'''
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Регистрация')
+        return dict(list(context.items()) + list(c_def.items()))'''
 
 
 

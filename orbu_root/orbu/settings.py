@@ -96,7 +96,7 @@ USE_I18N = True
 USE_TZ = True
 
 STATICFILES_DIRS = [
-    os.path.join(CONTENT_DIR, 'assets')
+    os.path.join(CONTENT_DIR)
 
 ]
 
