@@ -3,16 +3,22 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import TemplateDoesNotExist
 from django.template.loader import get_template
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import logout, login
+from django.utils.http import urlsafe_base64_decode
+from django.views import View
 from django.views.generic.edit import UpdateView, CreateView
+from django.contrib.auth.tokens import default_token_generator as \
+    token_generator
 
-from .forms import ChangeUserInfo, RegisterUserForm
+from .forms import ChangeUserInfo, RegisterUserForm, AuthenticationForm
 from .models import Ad, Gallery, User
+from .utils import send_email_for_verify
 
 
 def index(request):
@@ -65,27 +71,49 @@ class ChangeUserInfoView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
 
 
 class RegisterUser(CreateView):
-    form_class = UserCreationForm
-    #model = User
+    form_class = RegisterUserForm
+    model = User
     template_name = 'ads/registration.html'
     success_url = reverse_lazy('login')
-    fields = ['username', 'first_name']
-
 
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('index')
+        send_email_for_verify(self.request, user)
+        return redirect('ads:confirm_email')
+
+
+class EmailVerify(View):
+
+    def get(self, request, uidb64, token):
+        user = self.get_user(uidb64)
+
+        if user is not None and token_generator.check_token(user, token):
+            user.is_active = True
+            user.save()
+            login(request, user)
+            user.is_active = True
+            return redirect('ads:index')
+
+        return redirect('ads:invalid_verify')
+
+    @staticmethod
+    def get_user(uidb64):
+        try:
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError,
+                User.DoesNotExist, ValidationError):
+            user = None
+        return user
+
+
+class MyLoginView(LoginView):
+    form_class = AuthenticationForm
 
 
 
 
-
-'''
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title='Регистрация')
-        return dict(list(context.items()) + list(c_def.items()))'''
 
 
 

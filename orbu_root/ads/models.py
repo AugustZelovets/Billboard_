@@ -22,6 +22,9 @@ class Gallery(models.Model):
 
 
 class User(AbstractUser):
-    is_activated = models.BooleanField(default=True, db_index=True, verbose_name='Активирован?')
     send_messages = models.BooleanField(default=True, verbose_name='Уведомлять о новых комментариях?')
+    is_active = models.BooleanField(default=False)
+    email = models.EmailField(unique=True,)
 
+    USERNAME_FIELD = 'email'  # unique identifier
+    REQUIRED_FIELDS = ['username']  # поля,которые будут запрошены при создании пользователя с помощью  createsuperuser
