@@ -13,7 +13,7 @@ class AdAdmin(admin.ModelAdmin):
 
 
 admin.site.register(User)
-
+admin.site.register(Category)
 
 
 

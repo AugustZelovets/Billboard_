@@ -8,6 +8,9 @@ from django.contrib.auth.tokens import default_token_generator as \
 
 
 def send_email_for_verify(request, user):
+
+
+
     current_site = get_current_site(request)
     context = {
         'user': user,

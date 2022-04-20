@@ -52,6 +52,15 @@
     <div class="row">
         <nav class="col-md-auto nav flex-column border">
             <a href="{% url 'ads:index' %}" class="nav-link root">Главная</a>
+
+            {% for category in categories_list %}
+            {%with children=category.get_children%}
+            {% for child in children%}
+            {{child}}
+            {%endfor%}
+            {% endwith %}
+            {%endfor%}
+
             <span class="nav-link root font-weight-bold">Недвижимость</span>
             <a href="#" class="nav-link">Жилье</a>
             <a href="#" class="nav-link">Склады</a>

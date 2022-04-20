@@ -1,5 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from mptt.managers import TreeManager
+from mptt.models import MPTTModel
+
 
 
 class Ad(models.Model):
@@ -28,3 +31,13 @@ class User(AbstractUser):
 
     USERNAME_FIELD = 'email'  # unique identifier
     REQUIRED_FIELDS = ['username']  # поля,которые будут запрошены при создании пользователя с помощью  createsuperuser
+
+
+class Category(MPTTModel):
+    name = models.CharField(max_length=155)
+    slug = models.SlugField(max_length=155)
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='children', on_delete=models.CASCADE)
+    tree = TreeManager
+
+    def __str__(self):
+        return self.name

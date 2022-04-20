@@ -17,20 +17,24 @@ from django.contrib.auth.tokens import default_token_generator as \
     token_generator
 
 from .forms import ChangeUserInfo, RegisterUserForm, AuthenticationForm
-from .models import Ad, Gallery, User
+from .models import Ad, Gallery, User, Category
 from .utils import send_email_for_verify
 
 
 def index(request):
+    """returns objects to home page"""
     objects_list = Ad.objects.all()
+    categories_list = Category.objects.all()
     context = {
         'objects_list': objects_list,
+        'categories_list': categories_list,
+
     }
     return render(request, 'ads/index.html', context)
 
 
 def other_page(request, page):
-    """ Выводит страницы без подгрузки данных в них из БД (about)"""
+    """ для отображения страниц, в шаблоны которых не передаются данные, имя шаблона = url  """
     try:
         template = get_template('ads/' + page + '.html')
     except TemplateDoesNotExist:
