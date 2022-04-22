@@ -1,6 +1,6 @@
-import Sortable from 'sortablejs‘;
+// import Sortable from 'sortablejs‘;
 
-$('.sortable-items').each((sortablelndex, sortableltems) => { const sortable = $(sortableItems);
+$('.sortable-items').each((sortableIndex, sortableItems) => { const sortable = $(sortableItems);
 Sortable.create(sortableItems, {
     handle: '.sortable	drag-area',
     animation: 150,
@@ -20,8 +20,8 @@ Sortable.create(sortableItems, {
             traditional: true,
             headers: {
                 'X-CSRFToken’: $.cookie('csrftoken')
-            }
-        });
-    }
-});
+                }
+            });
+        }
+    });
 });

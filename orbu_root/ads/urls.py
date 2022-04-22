@@ -18,5 +18,4 @@ urlpatterns = [
     path('verify_email/<uidb64>/<token>/', EmailVerify.as_view(), name="verify_email"),  # взято из django auth/urls
     path('category/<slug:slug>', by_category, name='by_category'),
 
-
 ]

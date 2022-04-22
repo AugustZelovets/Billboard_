@@ -1,7 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse, Http404
@@ -15,8 +14,13 @@ from django.views import View
 from django.views.generic.edit import UpdateView, CreateView
 from django.contrib.auth.tokens import default_token_generator as \
     token_generator
+from django import forms
+from django.contrib.admin.views.decorators import staff_member_required
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.views.decorators.http import require_POST
 
-from .forms import ChangeUserInfo, RegisterUserForm, AuthenticationForm
+from .forms import *
 from .models import Ad, Gallery, User, Category
 from .utils import send_email_for_verify
 
@@ -120,6 +124,19 @@ def by_category(request, slug):
     pass
 
 
+'''@require_POST
+@staff_member_required
+def ajax_reorder_product_images(request, ad_id):
+    product = get_object_or_404(Ad, pk=ad_id)
+    #form = ReorderProductImagesForm(request.POST, instance=product)  # ???????
+    status = 200
+    ctx = {}
+    if form.is_valid():
+        form.save()
+    elif form.errors:
+        status = 400
+        ctx = {"error": form.errors}
+    return JsonResponse(ctx, status=status)'''
 
 
 

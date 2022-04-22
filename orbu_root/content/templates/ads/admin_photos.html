@@ -1,0 +1,26 @@
+<ul class="product-gallery sortable-items" data-post-url="{% url 'ads:product-images-reorder'
+ ad_id=ad.id %}" data-post-name="ordered_images">
+    {% if images %}
+    {% for image in images %}
+    {% if image.is_access %}
+    <li class="col s12 m6 14 sortable-item"
+        data-id="{{ image.pk|cut:'  '}}">
+        <div class="card">
+            <div class="card-image product-gallery-item-image">
+                <img class="responsive-img"
+                     src="{{ image.image.thumbnail.255x255 }}"
+                     srcset="{{ image.image.thumbnail.255x255 }} 1x, {{ image.image.thumbnail.510x510 }} 2x" alt="">
+            </div>
+            <div class="card-content">
+<span class="product-gallery-item-title card-title black-text" title="{{ image.alt }}">
+{% if image.alt %}
+    {{ image.alt }}
+{% else %}
+<span class="grey-text">
+{% trans "No description" context "Image card text" %}
+</span>
+{% endif %}
+</span>
+            </div>
+        </div>
+</ul>

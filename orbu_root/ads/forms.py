@@ -9,7 +9,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from .models import User
+from .models import *
 from django import forms
 
 from .utils import send_email_for_verify
@@ -67,3 +67,23 @@ class OrderedModelMultipleChoiceField(forms.ModelMultipleChoiceField):
         qs = super().clean(value)
         keys = list(map(int, value))
         return sorted(qs, key=lambda v: keys.index(v.pk))
+
+
+'''class ReorderProductImagesForm(forms.ModelForm):
+    ordered_images = OrderedModelMultipleChoiceField(queryset=ProductImage.objects.none())
+
+    class Meta:
+        model = Ad
+        fields = ()
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            if self.instance:
+                self.fields["ordered_images"].queryset = self.instance.images.all()
+
+        def save(self):
+            for order, image in enumerate(self.cleaned_data["ordered_images"]):
+                image.sort_order = order
+                image.save()
+                return self.instance
+'''
