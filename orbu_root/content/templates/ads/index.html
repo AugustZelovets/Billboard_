@@ -1,8 +1,24 @@
 {% extends 'ads/base.html' %}
 
 
-
 {% block content %}
 <h2>Последние 10 объявлений</h2>
 {% endblock %}
 
+{% block navigation%}
+{% load mptt_tags %}
+<ul>
+    {% recursetree categories_list %}
+    <li>
+        <a href="{{ node.get_absolute_url }}">{{ node.name }}</a>
+
+        {% if not node.is_leaf_node %}
+        <ul class="children">
+            <a href="#" class="nav-link">{{ children }}</a>
+
+        </ul>
+        {% endif %}
+    </li>
+    {% endrecursetree %}
+</ul>
+{% endblock%}

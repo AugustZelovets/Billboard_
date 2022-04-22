@@ -23,6 +23,8 @@ INSTALLED_APPS = [
     'ads.apps.AdsConfig',
     'bootstrap4',
     'django_registration',
+    'mptt',
+    
 
 ]
 

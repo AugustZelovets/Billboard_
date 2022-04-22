@@ -116,6 +116,8 @@ class MyLoginView(LoginView):
     form_class = AuthenticationForm
 
 
+def by_category(request, slug):
+    pass
 
 
 

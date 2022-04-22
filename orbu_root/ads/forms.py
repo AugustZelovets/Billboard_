@@ -60,3 +60,10 @@ class AuthenticationForm(DjangoAuthenticationForm):
             else:
                 self.confirm_login_allowed(self.user_cache)
         return self.cleaned_data
+
+
+class OrderedModelMultipleChoiceField(forms.ModelMultipleChoiceField):
+    def clean(self, value):
+        qs = super().clean(value)
+        keys = list(map(int, value))
+        return sorted(qs, key=lambda v: keys.index(v.pk))

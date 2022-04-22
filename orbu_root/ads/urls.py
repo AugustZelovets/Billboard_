@@ -15,7 +15,8 @@ urlpatterns = [
     path('registration/', RegisterUser.as_view(), name='registration'),
     #path('confirm_email/', TemplateView.as_view(template_name='ads/confirm_email.html'), name='confirm_email'),
     #path('invalid_verify/', TemplateView.as_view(template_name='ads/invalid_verify.html'), name='confirm_email'),
-    path('verify_email/<uidb64>/<token>/', EmailVerify.as_view(), name="verify_email",  # взято из django auth/urls
+    path('verify_email/<uidb64>/<token>/', EmailVerify.as_view(), name="verify_email"),  # взято из django auth/urls
+    path('category/<slug:slug>', by_category, name='by_category'),
 
-         ),
+
 ]
