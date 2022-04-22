@@ -89,3 +89,5 @@ class Category(MPTTModel):
 
     def get_absolute_url(self):
         return reverse('ads:by_category', kwargs={'slug': self.slug})
+
+    #######xxxx

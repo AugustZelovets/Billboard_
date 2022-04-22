@@ -138,7 +138,7 @@ def ajax_reorder_product_images(request, ad_id):
         ctx = {"error": form.errors}
     return JsonResponse(ctx, status=status)'''
 
-
+##XXXXXXXX
 
 
 
