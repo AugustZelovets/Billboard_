@@ -6,7 +6,7 @@ from mptt.managers import TreeManager
 from mptt.models import MPTTModel
 
 
-class SortableModel1(models.Model):
+'''class SortableModel1(models.Model):
     sort_order = models.IntegerField(editable=False, db_index=True, null=True)
 
     class Meta:
@@ -34,7 +34,7 @@ class SortableModel1(models.Model):
                 sort_order=F("sort_order") - 1
             )
             super().delete(*args, **kwargs)
-
+'''
 
 class Ad(models.Model):
     ad_title = models.CharField(max_length=300)
@@ -51,7 +51,7 @@ class Ad(models.Model):
         return self.ad_title
 
 
-class ProductImages(SortableModel1):
+'''class ProductImages(SortableModel1):
     ad = models.ForeignKey(Ad, related_name="images", on_delete=models.CASCADE)
     image = models.ImageField(upload_to="img", blank=False)
     alt = models.CharField(max_length=128, blank=True)
@@ -62,11 +62,11 @@ class ProductImages(SortableModel1):
 
     def get_ordering_queryset(self):
         return self.ad.images.all()
-
+'''
 
 class Gallery(models.Model):
     ad_otherphoto = models.ImageField(upload_to='img/')
-    ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='images')
+    ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='gallery_images')
 
 
 class User(AbstractUser):
@@ -90,4 +90,3 @@ class Category(MPTTModel):
     def get_absolute_url(self):
         return reverse('ads:by_category', kwargs={'slug': self.slug})
 
-    #######xxxx
